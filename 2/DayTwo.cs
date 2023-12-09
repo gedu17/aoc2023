@@ -7,19 +7,21 @@ public static class DayTwo
     public static async Task Solve()
     {
         var file = await File.ReadAllLinesAsync("2/input.txt");
-        var result = new List<int>();
-        var cubeCounts = new Dictionary<string, int> {
-            { "red", 12 },
-            { "green", 13 }, 
-            { "blue", 14 }
-        };
+        var results = new List<int>();
+        
 
         foreach (var line in file) 
         {
+            var result = 1;
+            var cubesInSets = new Dictionary<string, List<int>> {
+                { "red", new List<int> () },
+                { "green", new List<int> () }, 
+                { "blue", new List<int> () }
+            };
+
             var gameSplit = line.Split(":");
             var gameId = int.Parse(gameSplit[0].Replace("Game ", string.Empty));
             var sets = gameSplit[1].Split(";");
-            var isViable = true;
             
             foreach (var set in sets)
             {
@@ -28,28 +30,20 @@ public static class DayTwo
                 foreach (var cube in cubes)
                 {
                     var cubeSplit = cube.Split(" ");
-                    var cubeCount = cubeCounts[cubeSplit[1]];
 
-                    if (int.Parse(cubeSplit[0]) > cubeCount)
-                    {
-                        isViable = false;
-                        break;
-                    }
-                }
-
-                if (isViable is false)
-                {
-                    break;
+                    cubesInSets[cubeSplit[1]].Add(int.Parse(cubeSplit[0]));
                 }
             }
 
-            if (isViable)
+            foreach (var item in cubesInSets)
             {
-                result.Add(gameId);
+                result *= item.Value.Max();
             }
+            
+            results.Add(result);
         }
 
-        System.Console.WriteLine($"Day Two result: {result.Sum()}");
+        System.Console.WriteLine($"Day Two result: {results.Sum()}");
     }
 }
 
