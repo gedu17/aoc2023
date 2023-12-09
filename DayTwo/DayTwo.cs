@@ -6,7 +6,7 @@ public static class DayTwo
 {
     public static async Task Solve()
     {
-        var file = await File.ReadAllLinesAsync("2/input.txt");
+        var file = await File.ReadAllLinesAsync($"{nameof(DayTwo)}/input.txt");
         var results = new List<int>();
         
 
